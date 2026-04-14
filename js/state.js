@@ -42,9 +42,9 @@ function normalizeText(input) {
   return String(input ?? "").trim();
 }
 
-function apiBase() {
-  if (location.protocol === "file:") return "http://localhost:5000";
-  return "";
+export function apiBase() {
+  // Use environment variable if available, otherwise fallback
+  return import.meta.env?.VITE_API_BASE_URL || "https://dhanra-backend.onrender.com";
 }
 
 const API = `${apiBase()}/api/customers`;
