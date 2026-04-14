@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dhanra – Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <style>
+      body { background: var(--bg); }
+      .admin-wrap { padding: 24px 18px 40px; width: min(1140px, 100%); margin: 0 auto; }
+      .admin-head { display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap; margin: 10px 0 14px; }
+      .admin-title { margin:0; font-size: 22px; letter-spacing: -0.02em; }
+      .admin-sub { margin: 8px 0 0; color: var(--muted); }
+      .admin-tools { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+      .key { width: min(420px, 72vw); }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+      .pill { border:1px solid var(--border); padding:6px 10px; border-radius: 999px; background: rgba(255,255,255,0.8); font-weight:700; font-size:12px; }
+      .row { display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; }
+    </style>
+  </head>
+  <body>
+    <div class="admin-wrap">
+      <div class="admin-head">
+        <div>
+          <h1 class="admin-title">Admin dashboard</h1>
+          <p class="admin-sub">Review license requests and issue keys.</p>
+        </div>
+        <div class="admin-tools">
+          <input class="key" id="adminKey" placeholder="ADMIN_KEY (from backend/.env)" />
+          <button class="btn btn-primary" id="btnLoad" type="button">Load</button>
+        </div>
+      </div>
+
+      <div class="notice" id="adminNotice" hidden></div>
+
+      <section class="card table-card" style="margin-top: 12px;">
+        <div class="table-head">
+          <div class="table-title">Applications</div>
+          <div class="table-tools">
+            <select id="filter" class="select" aria-label="Filter">
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table" style="min-width: 980px;">
+            <thead>
+              <tr>
+                <th>Business</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>IFSC</th>
+                <th>Status</th>
+                <th>License</th>
+                <th class="actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const API = '/api/license/admin';
+      const KEY_STORAGE = 'dhanra_admin_key_v1';
+      const LEGACY_KEY_STORAGE = 'dhanra_admin_key_v1';
+
+      const notice = document.getElementById('adminNotice');
+      const tbody = document.getElementById('tbody');
+      const adminKeyInput = document.getElementById('adminKey');
+      const filter = document.getElementById('filter');
+
+      adminKeyInput.value =
+        localStorage.getItem(KEY_STORAGE) || localStorage.getItem(LEGACY_KEY_STORAGE) || '';
+      if (!localStorage.getItem(KEY_STORAGE) && localStorage.getItem(LEGACY_KEY_STORAGE)) {
+        localStorage.setItem(KEY_STORAGE, localStorage.getItem(LEGACY_KEY_STORAGE));
+        localStorage.removeItem(LEGACY_KEY_STORAGE);
+      }
+
+      function setNotice(message, tone) {
+        notice.hidden = !message;
+        notice.textContent = message || '';
+        notice.classList.remove('is-success', 'is-danger', 'is-warning');
+        if (tone) notice.classList.add(`is-${tone}`);
+      }
+
+      async function fetchJson(url, options = {}) {
+        const adminKey = adminKeyInput.value.trim();
+        if (!adminKey) throw new Error('Enter ADMIN_KEY.');
+        localStorage.setItem(KEY_STORAGE, adminKey);
+
+        const res = await fetch(url, {
+          ...options,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-key': adminKey,
+            ...(options.headers || {})
+          }
+        });
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : null;
+        if (!res.ok) throw new Error((data && data.error) || `Request failed (${res.status})`);
+        return data;
+      }
+
+      function statusPill(s) {
+        const span = document.createElement('span');
+        span.className = 'pill';
+        span.textContent = s;
+        return span;
+      }
+
+      function render(apps) {
+        tbody.innerHTML = '';
+        const f = filter.value;
+        const list = apps.filter(a => f === 'all' ? true : a.status === f);
+        for (const a of list) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${a.businessName}</td>
+            <td>${a.contactName}</td>
+            <td>${a.email}</td>
+            <td>${a.phone}</td>
+            <td class="mono">${a.ifsc}</td>
+            <td></td>
+            <td class="mono">${a.licenseKey || '—'}</td>
+            <td class="actions"></td>
+          `;
+          tr.children[5].appendChild(statusPill(a.status));
+
+          const actions = document.createElement('div');
+          actions.className = 'row';
+
+          const btnApprove = document.createElement('button');
+          btnApprove.className = 'btn btn-primary btn-sm';
+          btnApprove.type = 'button';
+          btnApprove.textContent = 'Approve';
+          btnApprove.disabled = a.status !== 'pending';
+
+          const btnReject = document.createElement('button');
+          btnReject.className = 'btn btn-danger btn-sm';
+          btnReject.type = 'button';
+          btnReject.textContent = 'Reject';
+          btnReject.disabled = a.status !== 'pending';
+
+          btnApprove.addEventListener('click', async () => {
+            setNotice('Approving…', 'warning');
+            const data = await fetchJson(`${API}/applications/${a._id}/approve`, { method: 'POST', body: JSON.stringify({}) });
+            setNotice(`Approved. License: ${data.licenseKey} (email mode: ${data.email?.mode || 'unknown'})`, 'success');
+            await load();
+          });
+
+          btnReject.addEventListener('click', async () => {
+            const notes = prompt('Reject reason (optional):') || '';
+            setNotice('Rejecting…', 'warning');
+            await fetchJson(`${API}/applications/${a._id}/reject`, { method: 'POST', body: JSON.stringify({ notes }) });
+            setNotice('Rejected.', 'success');
+            await load();
+          });
+
+          actions.append(btnApprove, btnReject);
+          tr.children[7].appendChild(actions);
+          tbody.appendChild(tr);
+        }
+      }
+
+      let cache = [];
+      async function load() {
+        setNotice('', '');
+        cache = await fetchJson(`${API}/applications`);
+        render(cache);
+      }
+
+      document.getElementById('btnLoad').addEventListener('click', () => load().catch(e => setNotice(e.message, 'danger')));
+      filter.addEventListener('change', () => render(cache));
+
+      setNotice('Enter ADMIN_KEY and click Load.', 'warning');
+    </script>
+  </body>
+</html>
+

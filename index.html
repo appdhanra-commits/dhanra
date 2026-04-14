@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dhanra - Payment Collection & Tracking for Indian Businesses</title>
+    <meta
+      name="description"
+      content="Dhanra - Modern payment collection and tracking SaaS for landlords and small businesses in India. Manage customer payments, track dues, and grow your business."
+    />
+    <meta name="keywords" content="payment collection, tracking, landlord, small business, India, SaaS, Dhanra" />
+    <meta name="author" content="Dhanra Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dhanra.in/" />
+    <meta property="og:title" content="Dhanra - Payment Collection & Tracking" />
+    <meta property="og:description" content="Modern payment collection SaaS for Indian landlords and small businesses" />
+    <meta property="og:image" content="./assets/logo.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://dhanra.in/" />
+    <meta property="twitter:title" content="Dhanra - Payment Collection & Tracking" />
+    <meta property="twitter:description" content="Modern payment collection SaaS for Indian landlords and small businesses" />
+    <meta property="twitter:image" content="./assets/logo.png" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/logo.png" />
+    <link rel="apple-touch-icon" href="./assets/logo.png" />
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="./assets/logo.png" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell" id="app">
+      <!-- Login / Access -->
+      <main class="auth" id="view-auth" aria-hidden="true">
+        <section class="auth-card">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true">
+              <img class="brand-logo" src="./assets/logo.png" alt="" />
+            </div>
+            <div class="brand-copy">
+              <div class="brand-name">Dhanra</div>
+              <div class="brand-tagline">Payments & tracking for local businesses</div>
+            </div>
+          </div>
+
+          <h1 class="auth-title">Get access to Dhanra</h1>
+          <p class="auth-subtitle">
+            Request a license for your business. After verification, we’ll email your license key.
+          </p>
+
+          <form id="license-form" class="form" autocomplete="on">
+            <div class="segmented" role="tablist" aria-label="Access mode">
+              <button class="seg-btn is-active" type="button" id="mode-request" data-mode="request">
+                Request license
+              </button>
+              <button class="seg-btn" type="button" id="mode-verify" data-mode="verify">
+                I have a license
+              </button>
+            </div>
+
+            <div class="form-grid" id="request-fields">
+              <div class="field">
+                <label for="businessName">Business name</label>
+                <input
+                  id="businessName"
+                  name="businessName"
+                  type="text"
+                  placeholder="e.g., Shree Rentals"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="contactName">Contact person</label>
+                <input
+                  id="contactName"
+                  name="contactName"
+                  type="text"
+                  placeholder="e.g., Owner / Manager name"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="e.g., owner@business.com"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  inputmode="tel"
+                  placeholder="10-digit mobile number"
+                  required
+                />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="address">Business address</label>
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  placeholder="City, area, full address"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="bankAccount">Bank account number</label>
+                <input
+                  id="bankAccount"
+                  name="bankAccount"
+                  type="text"
+                  inputmode="numeric"
+                  placeholder="e.g., 123456789012"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="ifsc">IFSC code</label>
+                <input
+                  id="ifsc"
+                  name="ifsc"
+                  type="text"
+                  placeholder="e.g., HDFC0001234"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-grid" id="verify-fields" hidden>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="licenseKey">License key</label>
+                <input
+                  id="licenseKey"
+                  name="licenseKey"
+                  type="text"
+                  placeholder="e.g., DHANRA-XXXX-XXXX"
+                />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit" id="btn-submit-access">
+                Submit request
+              </button>
+              <a class="btn btn-ghost" href="./admin.html" target="_blank" rel="noreferrer">
+                Admin
+              </a>
+            </div>
+
+            <div
+              class="notice"
+              id="auth-notice"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              hidden
+            ></div>
+          </form>
+
+          <div class="auth-footer">
+            <span class="muted">Requests and customers are stored in MongoDB.</span>
+          </div>
+        </section>
+      </main>
+
+      <!-- Dashboard -->
+      <div class="dashboard" id="view-dashboard" aria-hidden="true">
+        <header class="topbar">
+          <div class="topbar-left">
+            <a class="logo" href="#" data-nav="dashboard" aria-label="Dhanra home">
+              <span class="logo-mark" aria-hidden="true">
+                <img class="nav-logo" src="./assets/logo.png" alt="" />
+              </span>
+              <span class="logo-text">Dhanra</span>
+            </a>
+            <nav class="topnav" aria-label="Primary">
+              <button class="navlink is-active" type="button" data-nav="dashboard">
+                Dashboard
+              </button>
+              <button class="navlink" type="button" data-nav="customers">
+                Customers
+              </button>
+            </nav>
+          </div>
+
+          <div class="topbar-right">
+            <div class="user-pill" id="user-pill" title="Session">
+              <div class="user-meta">
+                <div class="user-name" id="user-business">Business</div>
+                <div class="user-sub" id="user-sub">License verified</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" type="button" id="btn-logout">
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main class="container">
+          <div
+            class="notice app-notice"
+            id="app-notice"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            hidden
+          ></div>
+          <section class="page-header">
+            <div>
+              <h1 class="page-title">Dashboard</h1>
+              <p class="page-subtitle">Track collections and follow up faster.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-primary" type="button" id="btn-add-customer">
+                Add customer
+              </button>
+            </div>
+          </section>
+
+          <section class="stats" aria-label="Key metrics">
+            <article class="card stat-card">
+              <div class="stat-label">Total customers</div>
+              <div class="stat-value" id="stat-customers">0</div>
+              <div class="stat-hint">Active in your list</div>
+            </article>
+            <article class="card stat-card">
+              <div class="stat-label">Total pending</div>
+              <div class="stat-value" id="stat-pending">₹0</div>
+              <div class="stat-hint">Unpaid + overdue</div>
+            </article>
+            <article class="card stat-card">
+              <div class="stat-label">Total collected</div>
+              <div class="stat-value" id="stat-collected">₹0</div>
+              <div class="stat-hint">Marked as paid</div>
+            </article>
+          </section>
+
+          <section class="card table-card" aria-label="Customers">
+            <div class="table-head">
+              <div class="table-title">Customers</div>
+              <div class="table-tools">
+                <div class="search">
+                  <input
+                    id="search"
+                    type="search"
+                    placeholder="Search name or phone…"
+                    autocomplete="off"
+                  />
+                </div>
+                <select id="filter-status" class="select" aria-label="Filter by status">
+                  <option value="all">All</option>
+                  <option value="unpaid">Unpaid</option>
+                  <option value="overdue">Overdue</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table" id="customers-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th class="num">Amount</th>
+                    <th>Due date</th>
+                    <th>Status</th>
+                    <th>Last payment</th>
+                    <th class="actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="customers-tbody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-empty" id="table-empty" hidden>
+              <div class="empty-title">No customers yet</div>
+              <div class="empty-sub">Add a customer to start tracking payments.</div>
+              <button class="btn btn-primary" type="button" data-action="add-from-empty">
+                Add customer
+              </button>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- Add/Edit Customer Modal -->
+      <div class="modal-backdrop" id="modal-customer" aria-hidden="true" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div class="modal-head">
+            <div>
+              <div class="modal-title" id="modal-title">Add customer</div>
+              <div class="modal-sub" id="modal-sub">Create a new payment entry.</div>
+            </div>
+            <button class="icon-btn" type="button" data-close="customer" aria-label="Close">
+              ✕
+            </button>
+          </div>
+
+          <form id="customer-form" class="form">
+            <input type="hidden" id="customerId" name="customerId" />
+
+            <div class="field">
+              <label for="customerName">Name</label>
+              <input id="customerName" name="name" type="text" placeholder="Customer name" required />
+            </div>
+
+            <div class="field">
+              <label for="customerPhone">Phone number</label>
+              <input
+                id="customerPhone"
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                placeholder="10-digit mobile number"
+                required
+              />
+            </div>
+
+            <div class="two-col">
+              <div class="field">
+                <label for="customerAmount">Amount (₹)</label>
+                <input
+                  id="customerAmount"
+                  name="amount"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="1"
+                  placeholder="e.g., 2500"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="customerDueDate">Due date</label>
+                <input id="customerDueDate" name="dueDate" type="date" required />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit" id="btn-save-customer">
+                Save
+              </button>
+              <button class="btn btn-ghost" type="button" data-close="customer">
+                Cancel
+              </button>
+            </div>
+
+            <div class="notice" id="customer-notice" role="status" aria-live="polite" hidden></div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div class="modal-backdrop" id="modal-confirm" aria-hidden="true" hidden>
+        <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+          <div class="modal-head">
+            <div>
+              <div class="modal-title" id="confirm-title">Delete customer?</div>
+              <div class="modal-sub" id="confirm-sub">
+                This action cannot be undone.
+              </div>
+            </div>
+            <button class="icon-btn" type="button" data-close="confirm" aria-label="Close">
+              ✕
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="confirm-box" id="confirm-body"></div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-danger" type="button" id="btn-confirm-delete">Delete</button>
+            <button class="btn btn-ghost" type="button" data-close="confirm">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>
