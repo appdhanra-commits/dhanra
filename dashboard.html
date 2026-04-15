@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dhanra - Financial Dashboard</title>
+    <meta
+      name="description"
+      content="Dhanra - Modern financial dashboard for Indian businesses with cluster-based customer management"
+    />
+    <meta name="keywords" content="dashboard, financial, payments, clusters, customer management, Dhanra" />
+    <meta name="author" content="Dhanra Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dhanraapp.co.in/" />
+    <meta property="og:title" content="Dhanra - Financial Dashboard" />
+    <meta property="og:description" content="Modern financial dashboard for Indian businesses" />
+    <meta property="og:image" content="./assets/IMG_8626.PNG" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://dhanraapp.co.in/" />
+    <meta property="twitter:title" content="Dhanra - Financial Dashboard" />
+    <meta property="twitter:description" content="Modern financial dashboard for Indian businesses" />
+    <meta property="twitter:image" content="./assets/IMG_8626.PNG" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/IMG_8626.PNG" />
+    <link rel="apple-touch-icon" href="./assets/IMG_8626.PNG" />
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="app-shell" id="app">
+      <!-- Dashboard Shell with Static View Containers -->
+      <div class="dashboard-shell" id="dashboard-shell">
+        <!-- Overview View -->
+        <div id="overview-view" class="dashboard-view">
+          <!-- Dashboard Header -->
+          <header class="dashboard-header">
+            <div class="header-left">
+              <div class="brand">
+                <div class="brand-mark" aria-hidden="true">
+                  <img class="brand-logo" src="./assets/IMG_8626.PNG" alt="Dhanra" />
+                </div>
+                <div class="brand-copy">
+                  <div class="brand-name">Dhanra</div>
+                  <div class="brand-tagline">Financial Dashboard</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="header-center">
+              <div class="dashboard-nav">
+                <button class="nav-btn active" data-view="overview">Overview</button>
+                <button class="nav-btn" data-view="clusters">Clusters</button>
+                <button class="nav-btn" data-view="customers">Customers</button>
+              </div>
+            </div>
+            
+            <div class="header-right">
+              <div class="user-menu">
+                <button class="user-avatar" id="user-menu-toggle">
+                  <img src="./assets/user-avatar.png" alt="User" />
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                  <button class="dropdown-item" id="edit-profile-btn">
+                    <span class="dropdown-icon">👤</span> Edit Profile
+                  </button>
+                  <button class="dropdown-item" id="manage-account-btn">
+                    <span class="dropdown-icon">⚙️</span> Manage Account
+                  </button>
+                  <button class="dropdown-item" id="settings-btn">
+                    <span class="dropdown-icon">🔧</span> Settings
+                  </button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item logout" id="logout-btn">
+                    <span class="dropdown-icon">🚪</span> Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- Dashboard Content -->
+          <div class="dashboard-content">
+            <!-- Overview Section -->
+            <section class="dashboard-section" id="overview-section">
+              <!-- Key Metrics -->
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <div class="metric-header">
+                    <div class="metric-icon">💰</div>
+                    <div class="metric-label">Monthly Collections</div>
+                  </div>
+                  <div class="metric-value" id="monthly-collections">₹0</div>
+                  <div class="metric-change positive" id="monthly-change">+0%</div>
+                </div>
+                
+                <div class="metric-card">
+                  <div class="metric-header">
+                    <div class="metric-icon">⏳</div>
+                    <div class="metric-label">Pending Amount</div>
+                  </div>
+                  <div class="metric-value" id="pending-amount">₹0</div>
+                  <div class="metric-change" id="pending-change">0 customers</div>
+                </div>
+                
+                <div class="metric-card">
+                  <div class="metric-header">
+                    <div class="metric-icon">👥</div>
+                    <div class="metric-label">Total Customers</div>
+                  </div>
+                  <div class="metric-value" id="total-customers">0</div>
+                  <div class="metric-change" id="customers-change">+0 this month</div>
+                </div>
+                
+                <div class="metric-card">
+                  <div class="metric-header">
+                    <div class="metric-icon">📁</div>
+                    <div class="metric-label">Total Clusters</div>
+                  </div>
+                  <div class="metric-value" id="total-clusters">0</div>
+                  <div class="metric-change" id="clusters-change">+0 created</div>
+                </div>
+              </div>
+
+              <!-- Payment Trends Chart -->
+              <div class="chart-container">
+                <div class="chart-header">
+                  <h3>Payment Collection Trends</h3>
+                  <div class="chart-controls">
+                    <button class="chart-btn active" data-period="daily">Daily</button>
+                    <button class="chart-btn" data-period="monthly">Monthly</button>
+                  </div>
+                </div>
+                <canvas id="payment-chart"></canvas>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Clusters View -->
+        <div id="clusters-view" class="dashboard-view" style="display: none;">
+          <!-- Dashboard Header -->
+          <header class="dashboard-header">
+            <div class="header-left">
+              <div class="brand">
+                <div class="brand-mark" aria-hidden="true">
+                  <img class="brand-logo" src="./assets/IMG_8626.PNG" alt="Dhanra" />
+                </div>
+                <div class="brand-copy">
+                  <div class="brand-name">Dhanra</div>
+                  <div class="brand-tagline">Financial Dashboard</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="header-center">
+              <div class="dashboard-nav">
+                <button class="nav-btn" data-view="overview">Overview</button>
+                <button class="nav-btn active" data-view="clusters">Clusters</button>
+                <button class="nav-btn" data-view="customers">Customers</button>
+              </div>
+            </div>
+            
+            <div class="header-right">
+              <div class="user-menu">
+                <button class="user-avatar" id="user-menu-toggle">
+                  <img src="./assets/user-avatar.png" alt="User" />
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                  <button class="dropdown-item" id="edit-profile-btn">
+                    <span class="dropdown-icon">👤</span> Edit Profile
+                  </button>
+                  <button class="dropdown-item" id="manage-account-btn">
+                    <span class="dropdown-icon">⚙️</span> Manage Account
+                  </button>
+                  <button class="dropdown-item" id="settings-btn">
+                    <span class="dropdown-icon">🔧</span> Settings
+                  </button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item logout" id="logout-btn">
+                    <span class="dropdown-icon">🚪</span> Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- Dashboard Content -->
+          <div class="dashboard-content">
+            <!-- Clusters Section -->
+            <section class="dashboard-section" id="clusters-section">
+              <div class="section-header">
+                <h2>Customer Clusters</h2>
+                <button class="btn btn-primary" id="add-cluster-btn">Add New Cluster</button>
+              </div>
+              
+              <div class="clusters-grid" id="clusters-container">
+                <!-- Clusters will be loaded here -->
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Customers View -->
+        <div id="customers-view" class="dashboard-view" style="display: none;">
+          <!-- Dashboard Header -->
+          <header class="dashboard-header">
+            <div class="header-left">
+              <div class="brand">
+                <div class="brand-mark" aria-hidden="true">
+                  <img class="brand-logo" src="./assets/IMG_8626.PNG" alt="Dhanra" />
+                </div>
+                <div class="brand-copy">
+                  <div class="brand-name">Dhanra</div>
+                  <div class="brand-tagline">Financial Dashboard</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="header-center">
+              <div class="dashboard-nav">
+                <button class="nav-btn" data-view="overview">Overview</button>
+                <button class="nav-btn" data-view="clusters">Clusters</button>
+                <button class="nav-btn active" data-view="customers">Customers</button>
+              </div>
+            </div>
+            
+            <div class="header-right">
+              <div class="user-menu">
+                <button class="user-avatar" id="user-menu-toggle">
+                  <img src="./assets/user-avatar.png" alt="User" />
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                  <button class="dropdown-item" id="edit-profile-btn">
+                    <span class="dropdown-icon">👤</span> Edit Profile
+                  </button>
+                  <button class="dropdown-item" id="manage-account-btn">
+                    <span class="dropdown-icon">⚙️</span> Manage Account
+                  </button>
+                  <button class="dropdown-item" id="settings-btn">
+                    <span class="dropdown-icon">🔧</span> Settings
+                  </button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item logout" id="logout-btn">
+                    <span class="dropdown-icon">🚪</span> Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- Dashboard Content -->
+          <div class="dashboard-content">
+            <!-- Customers Section -->
+            <section class="dashboard-section" id="customers-section">
+              <div class="section-header">
+                <h2>Customer Management</h2>
+                <div class="customer-actions">
+                  <button class="btn btn-primary" id="add-customer-btn">Add New Customer</button>
+                  <input type="search" placeholder="Search customers..." id="customer-search" />
+                </div>
+              </div>
+              
+              <div class="customers-grid" id="customers-container">
+                <!-- Customers will be loaded here -->
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modern Dashboard -->
+      <main class="dashboard" id="view-dashboard" aria-hidden="false" style="display: none;">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+          <div class="header-left">
+            <div class="brand">
+              <div class="brand-mark" aria-hidden="true">
+                <img class="brand-logo" src="./assets/IMG_8626.PNG" alt="Dhanra" />
+              </div>
+              <div class="brand-copy">
+                <div class="brand-name">Dhanra</div>
+                <div class="brand-tagline">Financial Dashboard</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="header-center">
+            <div class="dashboard-nav">
+              <button class="nav-btn active" data-view="overview">Overview</button>
+              <button class="nav-btn" data-view="clusters">Clusters</button>
+              <button class="nav-btn" data-view="customers">Customers</button>
+            </div>
+          </div>
+          
+          <div class="header-right">
+            <div class="user-menu">
+              <button class="user-avatar" id="user-menu-toggle">
+                <img src="./assets/user-avatar.png" alt="User" />
+              </button>
+              <div class="user-dropdown" id="user-dropdown">
+                <button class="dropdown-item" onclick="showEditProfileModal()">
+                  <span class="dropdown-icon">👤</span> Edit Profile
+                </button>
+                <button class="dropdown-item" onclick="showManageAccountModal()">
+                  <span class="dropdown-icon">⚙️</span> Manage Account
+                </button>
+                <button class="dropdown-item" onclick="showSettingsModal()">
+                  <span class="dropdown-icon">🔧</span> Settings
+                </button>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item logout" onclick="logout()">
+                  <span class="dropdown-icon">🚪</span> Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+          <!-- Overview Section -->
+          <section class="dashboard-section" id="overview-section">
+            <!-- Key Metrics -->
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-header">
+                  <div class="metric-icon">💰</div>
+                  <div class="metric-label">Monthly Collections</div>
+                </div>
+                <div class="metric-value" id="monthly-collections">₹0</div>
+                <div class="metric-change positive" id="monthly-change">+0%</div>
+              </div>
+              
+              <div class="metric-card">
+                <div class="metric-header">
+                  <div class="metric-icon">⏳</div>
+                  <div class="metric-label">Pending Amount</div>
+                </div>
+                <div class="metric-value" id="pending-amount">₹0</div>
+                <div class="metric-change" id="pending-change">0 customers</div>
+              </div>
+              
+              <div class="metric-card">
+                <div class="metric-header">
+                  <div class="metric-icon">👥</div>
+                  <div class="metric-label">Total Customers</div>
+                </div>
+                <div class="metric-value" id="total-customers">0</div>
+                <div class="metric-change" id="customers-change">+0 this month</div>
+              </div>
+              
+              <div class="metric-card">
+                <div class="metric-header">
+                  <div class="metric-icon">📁</div>
+                  <div class="metric-label">Total Clusters</div>
+                </div>
+                <div class="metric-value" id="total-clusters">0</div>
+                <div class="metric-change" id="clusters-change">+0 created</div>
+              </div>
+            </div>
+
+            <!-- Payment Trends Chart -->
+            <div class="chart-container">
+              <div class="chart-header">
+                <h3>Payment Collection Trends</h3>
+                <div class="chart-controls">
+                  <button class="chart-btn active" data-period="daily">Daily</button>
+                  <button class="chart-btn" data-period="monthly">Monthly</button>
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="payment-chart"></canvas>
+              </div>
+            </div>
+          </section>
+
+          <!-- Clusters Section -->
+          <section class="dashboard-section hidden" id="clusters-section">
+            <div class="section-header">
+              <h2>Customer Clusters</h2>
+              <button class="btn btn-primary btn-sm" onclick="showCreateClusterModal()">
+                <span class="btn-icon">+</span> Create Cluster
+              </button>
+            </div>
+            
+            <div class="clusters-grid" id="clusters-container">
+              <!-- Clusters will be dynamically loaded here -->
+            </div>
+          </section>
+
+          <!-- Customers Section -->
+          <section class="dashboard-section hidden" id="customers-section">
+            <div class="section-header">
+              <h2>All Customers</h2>
+              <div class="section-actions">
+                <select class="cluster-filter" id="cluster-filter">
+                  <option value="">All Clusters</option>
+                  <!-- Clusters will be dynamically loaded here -->
+                </select>
+                <button class="btn btn-primary btn-sm" onclick="showAddCustomerModal()">
+                  <span class="btn-icon">+</span> Add Customer
+                </button>
+              </div>
+            </div>
+            
+            <div class="customers-table-container">
+              <table class="customers-table" id="customers-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Cluster</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="customers-tbody">
+                  <!-- Customers will be dynamically loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- Modals -->
+      <div class="modal-backdrop" id="modal-backdrop" hidden></div>
+      
+      <!-- Create Cluster Modal -->
+      <div class="modal" id="create-cluster-modal" hidden>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Create New Cluster</h3>
+            <button class="modal-close" onclick="hideModal('create-cluster-modal')">×</button>
+          </div>
+          <div class="modal-body">
+            <form id="create-cluster-form" class="form">
+              <div class="field">
+                <label for="cluster-name">Cluster Name</label>
+                <input
+                  id="cluster-name"
+                  name="name"
+                  type="text"
+                  placeholder="e.g., Block A, Morning Batch, Shop Location 1"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="cluster-description">Description (Optional)</label>
+                <textarea
+                  id="cluster-description"
+                  name="description"
+                  placeholder="Describe what this cluster represents..."
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="hideModal('create-cluster-modal')">Cancel</button>
+            <button class="btn btn-primary" onclick="createCluster()">Create Cluster</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notice Container -->
+      <div id="notice-container" class="notice-container"></div>
+    </div>
+
+    <script src="js/dashboard-safe.js"></script>
+  </body>
+</html>

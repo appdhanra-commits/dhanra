@@ -8,6 +8,8 @@ import { fileURLToPath } from "url";
 import customersRouter from "./src/routes/customers.js";
 import licenseRouter from "./src/routes/license.js";
 import adminRouter from "./src/routes/admin.js";
+import onboardingRouter from "./src/routes/onboarding.js";
+import clustersRouter from "./src/routes/clusters.js";
 
 dotenv.config();
 
@@ -33,6 +35,8 @@ app.get("/api/health", (_req, res) => {
 app.use("/api/customers", customersRouter);
 app.use("/api/license", licenseRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/onboarding", onboardingRouter);
+app.use("/api/clusters", clustersRouter);
 
 // Serve the existing vanilla frontend (root folder)
 app.use(express.static(ROOT, { index: "index.html", extensions: ["html"] }));

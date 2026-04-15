@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dhanra - Business Onboarding</title>
+    <meta
+      name="description"
+      content="Complete your business setup with Dhanra - Payment collection and tracking for Indian businesses"
+    />
+    <meta name="keywords" content="onboarding, setup, business, Dhanra, payments, tracking" />
+    <meta name="author" content="Dhanra Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dhanraapp.co.in/" />
+    <meta property="og:title" content="Dhanra - Business Onboarding" />
+    <meta property="og:description" content="Complete your business setup with Dhanra" />
+    <meta property="og:image" content="./assets/IMG_8626.PNG" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://dhanraapp.co.in/" />
+    <meta property="twitter:title" content="Dhanra - Business Onboarding" />
+    <meta property="twitter:description" content="Complete your business setup with Dhanra" />
+    <meta property="twitter:image" content="./assets/IMG_8626.PNG" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/IMG_8626.PNG" />
+    <link rel="apple-touch-icon" href="./assets/IMG_8626.PNG" />
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell" id="app">
+      <!-- Onboarding Container -->
+      <main class="onboarding" id="view-onboarding" aria-hidden="false">
+        <section class="onboarding-card">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true">
+              <img class="brand-logo" src="./assets/IMG_8626.PNG" alt="Dhanra" />
+            </div>
+            <div class="brand-copy">
+              <div class="brand-name">Dhanra</div>
+              <div class="brand-tagline">Complete your business setup</div>
+            </div>
+          </div>
+
+          <!-- Login Mode Toggle -->
+          <div class="login-mode-toggle">
+            <button class="toggle-btn active" data-mode="new">New Business Setup</button>
+            <button class="toggle-btn" data-mode="existing">I Have a License Key</button>
+          </div>
+
+          <!-- Progress Steps -->
+          <div class="onboarding-progress" id="progress-steps">
+            <div class="progress-step active clickable" data-step="1">
+              <div class="step-number">1</div>
+              <div class="step-label">Account</div>
+            </div>
+            <div class="progress-step clickable" data-step="2">
+              <div class="step-number">2</div>
+              <div class="step-label">Profile</div>
+            </div>
+            <div class="progress-step clickable" data-step="3">
+              <div class="step-number">3</div>
+              <div class="step-label">Verify</div>
+            </div>
+          </div>
+
+          <!-- Step 1: Account Creation -->
+          <div class="onboarding-step active" id="step-account">
+            <!-- New Business Setup -->
+            <div class="setup-section" id="new-setup">
+              <h1 class="onboarding-title">Create Your Account</h1>
+              <p class="onboarding-subtitle">
+                Start with your email or phone number and a secure password
+              </p>
+
+              <div id="account-form" class="form">
+                <div class="field">
+                  <label for="email">Email Address</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="phone">Phone Number</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="+91 98765 43210"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="password">Password</label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Create a strong password"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Confirm your password"
+                    required
+                  />
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="button" id="proceed-profile">
+                    Continue to Profile Setup
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Existing User Login -->
+            <div class="setup-section hidden" id="existing-setup">
+              <h1 class="onboarding-title">Login with License Key</h1>
+              <p class="onboarding-subtitle">
+                Enter your license key to access your dashboard
+              </p>
+
+              <div id="license-form" class="form">
+                <div class="field">
+                  <label for="license-key">License Key</label>
+                  <input
+                    id="license-key"
+                    name="licenseKey"
+                    type="text"
+                    placeholder="DHANRA-XXXX-XXXX-XXXX"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="login-email">Email Address</label>
+                  <input
+                    id="login-email"
+                    name="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="button" id="access-dashboard">
+                    Access Dashboard
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Profile and Business Setup -->
+          <div class="onboarding-step" id="step-profile">
+            <h1 class="onboarding-title">Complete Your Profile</h1>
+            <p class="onboarding-subtitle">
+              Tell us about your business and setup your payment method
+            </p>
+
+            <div id="profile-form" class="form">
+              <div class="field">
+                <label for="fullName">Full Name</label>
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  placeholder="Your Full Name"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="address">Business Address</label>
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  placeholder="Complete business address"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="businessType">Business Type</label>
+                <select id="businessType" name="businessType" required>
+                  <option value="">Select your business type</option>
+                  <option value="rent">Rent / Rental Business</option>
+                  <option value="shops">Shops / Retail</option>
+                  <option value="society">Society / Apartment</option>
+                  <option value="gym">Gym / Fitness</option>
+                  <option value="school">School / Education</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label class="field-group-label">Payout Method</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="payoutMethod" value="upi" id="payout-upi" checked>
+                    <span class="radio-text">UPI ID</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="payoutMethod" value="bank" id="payout-bank">
+                    <span class="radio-text">Bank Account</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- UPI Field (shown by default) -->
+              <div class="field conditional-field" id="upi-field">
+                <label for="upiId">UPI ID</label>
+                <input
+                  id="upiId"
+                  name="upiId"
+                  type="text"
+                  placeholder="yourupi@upi"
+                  required
+                />
+              </div>
+
+              <!-- Bank Fields (hidden by default) -->
+              <div class="field conditional-field hidden" id="bank-fields">
+                <label for="bankAccountNumber">Bank Account Number</label>
+                <input
+                  id="bankAccountNumber"
+                  name="bankAccountNumber"
+                  type="text"
+                  placeholder="Your bank account number"
+                  required
+                />
+              </div>
+
+              <div class="field conditional-field hidden" id="bank-ifsc-field">
+                <label for="bankIfsc">IFSC Code</label>
+                <input
+                  id="bankIfsc"
+                  name="bankIfsc"
+                  type="text"
+                  placeholder="BANK0001234"
+                  required
+                />
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-ghost" type="button" id="back-account">
+                  Back
+                </button>
+                <button class="btn btn-primary" type="button" id="proceed-verification">
+                  Proceed to Verification
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Admin Verification -->
+          <div class="onboarding-step" id="step-verification">
+            <div class="verification-content">
+              <div class="verification-icon">📋</div>
+              <h1 class="onboarding-title">Admin Verification</h1>
+              <p class="onboarding-subtitle">
+                Your account is under review and may take 24-48 hours for verification.
+              </p>
+              <p class="verification-message">
+                We'll send you an email once your account is approved. You can then access your full dashboard and start managing customers.
+              </p>
+              <div class="verification-status">
+                <div class="status-item">
+                  <div class="status-label">Application ID:</div>
+                  <div class="status-value" id="application-id">-</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-label">Status:</div>
+                  <div class="status-value status-pending">Pending Verification</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Notice Container -->
+      <div id="notice-container" class="notice-container"></div>
+    </div>
+
+    <script src="./js/onboarding.js"></script>
+  </body>
+</html>

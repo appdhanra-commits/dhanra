@@ -6,6 +6,27 @@ import { sendLicenseEmail } from "../utils/mailer.js";
 
 const router = express.Router();
 
+// GET /api/license/status - Check license status
+router.get("/status", async (req, res) => {
+  const authHeader = req.header("Authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No license key provided" });
+  }
+
+  const licenseKey = authHeader.replace("Bearer ", "").trim();
+  const license = await License.findOne({ key: licenseKey, active: true }).lean();
+  
+  if (!license) {
+    return res.json({ status: "invalid", message: "Invalid license key" });
+  }
+
+  return res.json({ 
+    status: "approved", 
+    message: "License is valid",
+    businessName: license.businessName 
+  });
+});
+
 function requireAdmin(req, res, next) {
   const key = String(req.header("x-admin-key") || "").trim();
   const expected = String(process.env.ADMIN_KEY || "").trim();

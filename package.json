@@ -1,0 +1,36 @@
+{
+  "name": "dhanra-frontend",
+  "version": "1.0.0",
+  "description": "Financial Dashboard SaaS Frontend",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -c-1",
+    "dev": "npx http-server . -p 3000 -o",
+    "build": "echo 'Build complete - static files ready'",
+    "deploy": "echo 'Deploy to production hosting'"
+  },
+  "keywords": [
+    "dashboard",
+    "financial",
+    "saas",
+    "responsive",
+    "mobile",
+    "production"
+  ],
+  "author": "Dhanra Team",
+  "license": "Commercial",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/dhanra.git"
+  },
+  "homepage": "https://your-domain.com",
+  "bugs": {
+    "url": "https://github.com/your-username/dhanra/issues"
+  }
+}

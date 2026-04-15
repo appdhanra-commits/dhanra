@@ -122,5 +122,46 @@ router.delete("/:id", requireLicense, async (req, res) => {
   res.json({ ok: true });
 });
 
+// GET /api/customers/metrics - Get dashboard metrics
+router.get("/metrics", requireLicense, async (req, res) => {
+  const license = req.license;
+  const today = new Date();
+  const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+
+  const customers = await Customer.find({ businessId: license.businessId });
+  
+  const totalCustomers = customers.length;
+  const paidCustomers = customers.filter(c => c.paidAt).length;
+  const pendingCustomers = customers.filter(c => !c.paidAt).length;
+  
+  const monthlyCollections = customers
+    .filter(c => c.paidAt && new Date(c.paidAt) >= thisMonth)
+    .reduce((sum, c) => sum + (c.amount || 0), 0);
+    
+  const pendingAmount = customers
+    .filter(c => !c.paidAt)
+    .reduce((sum, c) => sum + (c.amount || 0), 0);
+
+  const monthlyChange = Math.floor(Math.random() * 20) - 10; // Placeholder
+  const pendingChange = pendingCustomers;
+  const customersChange = Math.floor(Math.random() * 10) - 5; // Placeholder
+  const clustersChange = Math.floor(Math.random() * 5) - 2; // Placeholder
+
+  res.json({
+    success: true,
+    metrics: {
+      monthlyCollections,
+      pendingAmount,
+      totalCustomers,
+      totalClusters: 5, // Placeholder
+      monthlyChange,
+      pendingChange,
+      customersChange,
+      clustersChange
+    }
+  });
+});
+
 export default router;
 
